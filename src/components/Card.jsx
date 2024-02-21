@@ -22,12 +22,13 @@ function Card() {
             console.error('Error fetch Pokemon images:', error);
         }
     }
+    
     fetchPokemonImages();
 
     return (
         <div>
             {pokemonImages.map((imageUrl, index) => (
-                <img key={index} src={imageUrl} alt={`Pokemon ${index +1}`} />                
+                <img key={index} src={imageUrl} alt={`Pokemon ${index + 1}`} />                
             ))}
         </div>
     );
