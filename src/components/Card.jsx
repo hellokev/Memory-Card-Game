@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function Card() {
 
     const [pokemonImages, setPokemonImages] = useState([]);
+    const [score, setScore] = useState(0);
 
     async function fetchPokemonImages() {
         try {
@@ -22,14 +23,38 @@ function Card() {
             console.error('Error fetch Pokemon images:', error);
         }
     }
+
+    useEffect(() => {
+        const shuffleImages = (pokeArr) => {
+            for (let i = pokeArr.length - 1; i > 0;  i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [pokeArr[i], pokeArr[j]] = [pokeArr[j], pokeArr[i]] 
+            }
+            return pokeArr;
+        }
+
+        const shuffle = shuffleImages([...pokemonImages]);
+        setPokemonImages(shuffle);
+    }, [score])
     
-    fetchPokemonImages();
+    const handleScore = () => {
+        setScore(score + 1);
+    }
+    useEffect(() => {
+        fetchPokemonImages();
+    }, [])
 
     return (
         <div>
             {pokemonImages.map((imageUrl, index) => (
-                <img key={index} src={imageUrl} alt={`Pokemon ${index + 1}`} />                
+                <img 
+                    key={index} 
+                    src={imageUrl} 
+                    alt={`Pokemon ${index + 1}`}
+                    onClick={() => handleScore(index)} 
+                />                
             ))}
+            <h1>{score}</h1>
         </div>
     );
 }
