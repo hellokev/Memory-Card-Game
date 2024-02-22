@@ -4,6 +4,7 @@ function Card() {
 
     const [pokemonImages, setPokemonImages] = useState([]);
     const [score, setScore] = useState(0);
+    const [clickedImages, setClickedImages] = useState([]);
 
     async function fetchPokemonImages() {
         try {
@@ -38,9 +39,27 @@ function Card() {
         setPokemonImages(shuffle);
     }, [score])
     
-    const handleScore = () => {
-        setScore(score + 1);
+
+    // Puts 'clickedImages' into an array 'updatedClickedImages'.
+    // Sets the URL of that image to true.
+    // Updates the setClickedImages to have that.
+    // Adds to score.
+    // However, if the image has already been set, it does the opposite of the initial if block and sets the score to 0.
+    const handleScore = (imageUrl) => {
+        if (!clickedImages[imageUrl]) {
+            const updatedClickedImages = [...clickedImages];
+            updatedClickedImages[imageUrl] = true;
+            setClickedImages(updatedClickedImages);
+            setScore(score + 1);
+
+        } else {
+            const updatedClickedImages = [...clickedImages];
+            updatedClickedImages[imageUrl] = false;
+            setClickedImages(updatedClickedImages);
+            setScore(0);
+        }
     }
+
     useEffect(() => {
         fetchPokemonImages();
     }, [])
@@ -52,7 +71,7 @@ function Card() {
                     key={index} 
                     src={imageUrl} 
                     alt={`Pokemon ${index + 1}`}
-                    onClick={() => handleScore(index)} 
+                    onClick={() => handleScore(imageUrl)} 
                 />                
             ))}
             <h1>{score}</h1>
