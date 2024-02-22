@@ -26,6 +26,7 @@ function Card() {
 
     useEffect(() => {
         const shuffleImages = (pokeArr) => {
+            // Fisher-Yates shuffle algorithm
             for (let i = pokeArr.length - 1; i > 0;  i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [pokeArr[i], pokeArr[j]] = [pokeArr[j], pokeArr[i]] 
